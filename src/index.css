@@ -1,0 +1,88 @@
+/* 初始化样式 */
+
+/* 清除默认边距 */
+html,
+body,
+div,
+span,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+section,
+footer,
+form,
+table,
+header,
+dl,
+dt,
+th,
+tr,
+td,
+tbody,
+thead,
+i,
+a,
+img {
+  margin: 0;
+  padding: 0;
+}
+
+/* 溢出选项 */
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 取消 a 下划线 */
+a {
+  text-decoration: none;
+}
+
+/* 取消 li 前面的小圆点 */
+li {
+  list-style: none;
+}
+
+/* 使 i 不倾斜 */
+i {
+  font-style: normal;
+}
+
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* 设置滚动条样式 */
+*::-webkit-scrollbar {
+  width: 10px;
+  /* // height: 10px;  */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+
+/* // 兼容Firefox、IE */
+* {
+  scrollbar-width: 10px;
+  /* scrollbar-base-color: green;
+  scrollbar-track-color: red;
+  scrollbar-arrow-color: blue; */
+}
