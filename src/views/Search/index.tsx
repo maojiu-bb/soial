@@ -1,14 +1,14 @@
 import TabBar from '@/components/TabBar'
 import { FC } from 'react'
 
-const Home: FC = () => {
+const Search: FC = () => {
   return (
-    <div className="home">
-      home
+    <div className="search">
+      search
       {/* TabBar */}
       <TabBar></TabBar>
     </div>
   )
 }
 
-export default Home
+export default Search

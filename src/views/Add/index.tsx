@@ -1,14 +1,14 @@
 import TabBar from '@/components/TabBar'
 import { FC } from 'react'
 
-const Home: FC = () => {
+const Add: FC = () => {
   return (
-    <div className="home">
-      home
+    <div className="add">
+      add
       {/* TabBar */}
       <TabBar></TabBar>
     </div>
   )
 }
 
-export default Home
+export default Add
