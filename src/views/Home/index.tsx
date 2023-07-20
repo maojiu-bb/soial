@@ -1,4 +1,4 @@
-import TabBar from '@/components/TabBar'
+import TabBar from '@/components/Global/TabBar'
 import { FC } from 'react'
 
 const Home: FC = () => {
