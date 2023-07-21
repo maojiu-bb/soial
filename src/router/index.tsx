@@ -6,6 +6,7 @@ const User = lazy(() => import('@/views/User/index'))
 const Search = lazy(() => import('@/views/Search/index'))
 const Add = lazy(() => import('@/views/Add/index'))
 const Message = lazy(() => import('@/views/Message/index'))
+const Edit = lazy(() => import('@/views/Edit/index'))
 
 const routes: RouteObject[] = [
   {
@@ -31,6 +32,10 @@ const routes: RouteObject[] = [
   {
     path: '/message',
     element: <Message></Message>
+  },
+  {
+    path: 'edit',
+    element: <Edit></Edit>
   }
 ]
 

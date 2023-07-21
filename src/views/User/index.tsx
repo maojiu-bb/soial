@@ -1,5 +1,6 @@
 import { FC, useState } from 'react'
-import { CapsuleTabs, ImageViewer } from 'antd-mobile'
+import { useNavigate } from 'react-router-dom'
+import { CapsuleTabs, ImageViewer, Tag } from 'antd-mobile'
 import TabBar from '@/components/Global/TabBar'
 import My from '@/components/My'
 import Star from '@/components/Star'
@@ -52,6 +53,7 @@ const Avatar: FC = () => {
 
 // 顶部数据状态
 const TopData: FC = () => {
+  const navigate = useNavigate()
   const dataList = [
     { title: '喜欢', count: 99 },
     { title: '关注', count: 99 },
@@ -84,6 +86,16 @@ const TopData: FC = () => {
           </span>
         )}
         <span>江西·赣州</span>
+      </div>
+      <div className="edit">
+        <Tag
+          color="primary"
+          fill="outline"
+          style={{ '--border-radius': '6px', padding: '5px 10px' }}
+          onClick={() => navigate('/edit')}
+        >
+          编辑
+        </Tag>
       </div>
     </div>
   )
