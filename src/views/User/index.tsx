@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CapsuleTabs, ImageViewer, Tag } from 'antd-mobile'
 import TabBar from '@/components/Global/TabBar'
@@ -103,18 +103,51 @@ const TopData: FC = () => {
 
 // 胶囊选项卡
 const Capsule: FC = () => {
+  const [showTitle, setShowTitle] = useState(false)
+  const capsuleRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const titleElement = capsuleRef.current
+      if (titleElement) {
+        const rect = titleElement.getBoundingClientRect()
+        if (rect.y <= 0) {
+          setShowTitle(true)
+        } else {
+          setShowTitle(false)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
-    <CapsuleTabs>
-      <CapsuleTabs.Tab title="我的" key="my">
-        <My></My>
-      </CapsuleTabs.Tab>
-      <CapsuleTabs.Tab title="喜欢" key="like">
-        <Like></Like>
-      </CapsuleTabs.Tab>
-      <CapsuleTabs.Tab title="收藏" key="star">
-        <Star></Star>
-      </CapsuleTabs.Tab>
-    </CapsuleTabs>
+    <div className="capsule" ref={capsuleRef}>
+      {showTitle && (
+        <div
+          className={`title ${showTitle ? 'show' : ''} ${
+            showTitle ? 'fade-in' : 'fade-out'
+          }`}
+        >
+          猫九
+        </div>
+      )}
+      <CapsuleTabs>
+        <CapsuleTabs.Tab title="我的" key="my">
+          <My></My>
+        </CapsuleTabs.Tab>
+        <CapsuleTabs.Tab title="喜欢" key="like">
+          <Like></Like>
+        </CapsuleTabs.Tab>
+        <CapsuleTabs.Tab title="收藏" key="star">
+          <Star></Star>
+        </CapsuleTabs.Tab>
+      </CapsuleTabs>
+    </div>
   )
 }
 

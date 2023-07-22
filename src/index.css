@@ -104,3 +104,9 @@ section {
 .adm-capsule-tabs-tab-active {
   background-color: #e1c0ff !important;
 }
+
+.adm-capsule-tabs-header {
+  position: sticky !important;
+  top: 55px;
+  background-color: #fff;
+}
