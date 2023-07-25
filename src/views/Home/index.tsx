@@ -90,7 +90,7 @@ const Home: FC = () => {
         }
         style={homeStyle.nav}
       >
-        首页
+        Soial
       </NavBar>
 
       <div style={homeStyle.main}>

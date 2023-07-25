@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 
 export const homeStyle = {
   main: {
-    marginTop: '40px',
+    marginTop: '50px',
     padding: '12px',
     paddingBottom: '60px'
   } as CSSProperties,
@@ -12,6 +12,7 @@ export const homeStyle = {
     color: '#fff',
     position: 'fixed',
     width: '100%',
+    height: '50px',
     top: '0px'
   } as CSSProperties,
 
