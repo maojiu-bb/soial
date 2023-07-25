@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { LeftOutline } from 'antd-mobile-icons'
 import '@/styles/edit.less'
 import EditList from '@/components/EditList'
+import { useUpload } from '@/hooks/useUpload'
 
 // 返回按钮
 const BackIcon: FC = () => {
@@ -16,26 +17,46 @@ const BackIcon: FC = () => {
 
 // 背景图片
 const BackImg: FC = () => {
+  const { fileInputRef, handleButtonClick, handleFileChange } = useUpload()
+
   return (
     <div className="bg-img">
       <img
         src="https://tse3-mm.cn.bing.net/th/id/OIP-C.Q_Eb78_1wfJlsHQJDkiRSAHaE7?w=240&h=190&c=7&r=0&o=5&dpr=1.1&pid=1.7"
         alt=""
       />
-      <div className="change">更换图片</div>
+      <div className="change" onClick={handleButtonClick}>
+        更换图片
+      </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
     </div>
   )
 }
 
 // 头像
 const Avatar: FC = () => {
+  const { fileInputRef, handleButtonClick, handleFileChange } = useUpload()
+
   return (
     <div className="avatar">
       <img
         src="https://tse1-mm.cn.bing.net/th/id/OIP-C.3wZInd0etWt1rCYy7aT9mQAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
         alt=""
       />
-      <div className="title">点击更换头像</div>
+      <div className="title" onClick={handleButtonClick}>
+        点击更换头像
+      </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
     </div>
   )
 }
