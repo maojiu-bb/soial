@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
   MoreOutline,
   EyeOutline,
@@ -7,7 +8,7 @@ import {
   StarOutline
 } from 'antd-mobile-icons'
 import '@/styles/post.less'
-import { ActionSheet, Toast } from 'antd-mobile'
+import { ActionSheet } from 'antd-mobile'
 import type { Action } from 'antd-mobile/es/components/action-sheet'
 
 // 模拟数据
@@ -98,9 +99,17 @@ const actions: Action[] = [
   { text: '删除', key: 'delete' }
 ]
 
+const homeActions: Action[] = [
+  { text: '发起聊天', key: 'chat' },
+  { text: '隐藏', key: 'hide' },
+  { text: '举报', key: 'report' }
+]
+
 const Post: FC = () => {
+  const location = useLocation()
+
   const [data, setData] = useState(
-    mockData.map((item) => ({ ...item, visible: false }))
+    mockData.map((item) => ({ ...item, visible: false, showPost: true }))
   )
   const handelClick = (id: number) => {
     setData((prevData) =>
@@ -116,17 +125,29 @@ const Post: FC = () => {
       )
     )
   }
-  const onAction = ({ key, text }: Action) => {
-    if (key === 'edit' || key === 'delete') {
-      Toast.show(`点击了${text}`)
+
+  const onAction = ({ key, text }: Action, id: number) => {
+    if (key === 'hide') {
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === id ? { ...item, showPost: false } : item
+        )
+      )
+      onClose(id)
     }
+
+    console.log(key, text)
   }
 
   return (
     <>
       {data.map((item) => {
         return (
-          <div className="post" key={item.id}>
+          <div
+            className="post"
+            key={item.id}
+            style={item.showPost ? { display: 'block' } : { display: 'none' }}
+          >
             <div className="top-info">
               <img src={item.avatar} alt="" />
               <div className="info">
@@ -140,9 +161,9 @@ const Post: FC = () => {
                 extra="请选择你要进行的操作"
                 cancelText="取消"
                 visible={item.visible}
-                actions={actions}
+                actions={location.pathname === '/home' ? homeActions : actions}
                 onClose={() => onClose(item.id)}
-                onAction={onAction}
+                onAction={(value) => onAction(value, item.id)}
               />
             </div>
             <div className="detail">

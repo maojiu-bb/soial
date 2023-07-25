@@ -9,6 +9,7 @@ const Message = lazy(() => import('@/views/Message/index'))
 const Edit = lazy(() => import('@/views/Edit/index'))
 const EditName = lazy(() => import('@/views/EditName/index'))
 const EditDescription = lazy(() => import('@/views/EditDescription/index'))
+const Setting = lazy(() => import('@/views/Setting/index'))
 
 const routes: RouteObject[] = [
   {
@@ -46,6 +47,10 @@ const routes: RouteObject[] = [
   {
     path: '/editDescription',
     element: <EditDescription></EditDescription>
+  },
+  {
+    path: '/setting',
+    element: <Setting></Setting>
   }
 ]
 
