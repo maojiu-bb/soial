@@ -69,10 +69,9 @@ section {
 }
 
 /* 设置滚动条样式 */
-/* *::-webkit-scrollbar {
-  width: 10px;
-   height: 10px; 
-} */
+*::-webkit-scrollbar {
+  width: 0;
+}
 
 /* *::-webkit-scrollbar-thumb {
   background: #ccc;
