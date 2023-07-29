@@ -11,6 +11,9 @@ const EditName = lazy(() => import('@/views/EditName/index'))
 const EditDescription = lazy(() => import('@/views/EditDescription/index'))
 const Setting = lazy(() => import('@/views/Setting/index'))
 const PostDetail = lazy(() => import('@/views/PostDetail/index'))
+const SettingPassword = lazy(() => import('@/views/SettingPassword/index'))
+const SettingEmail = lazy(() => import('@/views/SettingEmail/index'))
+const CancelAccount = lazy(() => import('@/views/CancelAccount/index'))
 
 const routes: RouteObject[] = [
   {
@@ -56,6 +59,18 @@ const routes: RouteObject[] = [
   {
     path: '/postDetail',
     element: <PostDetail></PostDetail>
+  },
+  {
+    path: '/settingPassword',
+    element: <SettingPassword></SettingPassword>
+  },
+  {
+    path: '/settingEmail',
+    element: <SettingEmail></SettingEmail>
+  },
+  {
+    path: '/cancelAccount',
+    element: <CancelAccount></CancelAccount>
   }
 ]
 
