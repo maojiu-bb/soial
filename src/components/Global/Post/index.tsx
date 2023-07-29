@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   MoreOutline,
   EyeOutline,
@@ -107,6 +107,7 @@ const homeActions: Action[] = [
 
 const Post: FC = () => {
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [data, setData] = useState(
     mockData.map((item) => ({ ...item, visible: false, showPost: true }))
@@ -166,7 +167,10 @@ const Post: FC = () => {
                 onAction={(value) => onAction(value, item.id)}
               />
             </div>
-            <div className="detail">
+            <div
+              className="detail"
+              onClick={() => navigate(`/postDetail?id=${item.id}`)}
+            >
               {item.text && <div className="text">{item.text}</div>}
               <div className="images">
                 {item.images.length > 0 &&
