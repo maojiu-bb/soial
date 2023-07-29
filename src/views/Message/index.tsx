@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TabBar from '@/components/Global/TabBar'
 import '@/styles/message.less'
 import { NavBar, Popover, Toast } from 'antd-mobile'
@@ -7,13 +8,11 @@ import {
   SearchOutline,
   RightOutline,
   FileWrongOutline,
-  MessageOutline,
-  ScanningOutline
+  MessageOutline
 } from 'antd-mobile-icons'
 import { Action } from 'antd-mobile/es/components/popover'
 
 const actions: Action[] = [
-  { key: 'scan', icon: <ScanningOutline />, text: '扫一扫' },
   { key: 'chat', icon: <MessageOutline />, text: '创建群聊' },
   { key: 'clear', icon: <FileWrongOutline />, text: '清空列表' }
 ]
@@ -52,9 +51,11 @@ const AvatarGroup: FC = () => {
 
 // 聊天列表
 const ChatList: FC = () => {
+  const navigate = useNavigate()
+
   return (
     <div className="chat-list">
-      <div className="chat-list-item">
+      <div className="chat-list-item" onClick={() => navigate('/chat')}>
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""

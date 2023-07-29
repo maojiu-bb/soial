@@ -14,6 +14,7 @@ const PostDetail = lazy(() => import('@/views/PostDetail/index'))
 const SettingPassword = lazy(() => import('@/views/SettingPassword/index'))
 const SettingEmail = lazy(() => import('@/views/SettingEmail/index'))
 const CancelAccount = lazy(() => import('@/views/CancelAccount/index'))
+const Chat = lazy(() => import('@/views/Chat/index'))
 
 const routes: RouteObject[] = [
   {
@@ -71,6 +72,10 @@ const routes: RouteObject[] = [
   {
     path: '/cancelAccount',
     element: <CancelAccount></CancelAccount>
+  },
+  {
+    path: '/chat',
+    element: <Chat></Chat>
   }
 ]
 
