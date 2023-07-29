@@ -17,6 +17,7 @@ const CancelAccount = lazy(() => import('@/views/CancelAccount/index'))
 const Chat = lazy(() => import('@/views/Chat/index'))
 const ChatOption = lazy(() => import('@/views/ChatOption/index'))
 const Friends = lazy(() => import('@/views/Friends/index'))
+const ChatGroup = lazy(() => import('@/views/ChatGroup/index'))
 
 const routes: RouteObject[] = [
   {
@@ -86,6 +87,10 @@ const routes: RouteObject[] = [
   {
     path: '/friends',
     element: <Friends></Friends>
+  },
+  {
+    path: '/chatGroup',
+    element: <ChatGroup></ChatGroup>
   }
 ]
 

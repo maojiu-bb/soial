@@ -2,7 +2,7 @@ import { FC, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TabBar from '@/components/Global/TabBar'
 import '@/styles/message.less'
-import { Dialog, Input, InputRef, NavBar, Popover } from 'antd-mobile'
+import { Dialog, Input, InputRef, NavBar, Popover, Toast } from 'antd-mobile'
 import {
   AddCircleOutline,
   SearchOutline,
@@ -242,6 +242,21 @@ const Nav: FC = () => {
     }
     if (node.key === 'friends') {
       navigate('/friends')
+    }
+    if (node.key === 'chat-group') {
+      navigate('/chatGroup')
+    }
+    if (node.key === 'clear') {
+      Dialog.confirm({
+        content: '是否确认清空?',
+        onConfirm: () => {
+          Toast.show({
+            icon: 'fail',
+            content: '清空失败',
+            position: 'center'
+          })
+        }
+      })
     }
   }
 
