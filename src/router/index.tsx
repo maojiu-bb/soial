@@ -15,6 +15,7 @@ const SettingPassword = lazy(() => import('@/views/SettingPassword/index'))
 const SettingEmail = lazy(() => import('@/views/SettingEmail/index'))
 const CancelAccount = lazy(() => import('@/views/CancelAccount/index'))
 const Chat = lazy(() => import('@/views/Chat/index'))
+const ChatOption = lazy(() => import('@/views/ChatOption/index'))
 
 const routes: RouteObject[] = [
   {
@@ -76,6 +77,10 @@ const routes: RouteObject[] = [
   {
     path: '/chat',
     element: <Chat></Chat>
+  },
+  {
+    path: '/chatOption',
+    element: <ChatOption></ChatOption>
   }
 ]
 

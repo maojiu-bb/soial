@@ -106,7 +106,13 @@ const Chat: FC = () => {
           color: '#fff'
         }}
         onBack={() => navigate(-1)}
-        right={<MoreOutline fontSize={28} style={{ marginRight: 30 }} />}
+        right={
+          <MoreOutline
+            fontSize={28}
+            style={{ marginRight: 30 }}
+            onClick={() => navigate('/chatOption')}
+          />
+        }
       >
         猫九
       </NavBar>
