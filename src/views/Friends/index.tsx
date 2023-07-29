@@ -1,64 +1,14 @@
-import { FC, useRef } from 'react'
+import { InputRef, NavBar, SearchBar, Toast } from 'antd-mobile'
+import { LeftOutline, RightOutline } from 'antd-mobile-icons'
+import { FC, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import TabBar from '@/components/Global/TabBar'
-import '@/styles/message.less'
-import { Dialog, Input, InputRef, NavBar, Popover } from 'antd-mobile'
-import {
-  AddCircleOutline,
-  SearchOutline,
-  RightOutline,
-  FileWrongOutline,
-  MessageOutline,
-  TeamOutline
-} from 'antd-mobile-icons'
-import { Action } from 'antd-mobile/es/components/popover'
-
-const actions: Action[] = [
-  { key: 'friends', icon: <TeamOutline />, text: '我的朋友' },
-  { key: 'chat-group', icon: <MessageOutline />, text: '我的群聊' },
-  { key: 'create-group', icon: <MessageOutline />, text: '创建群聊' },
-  { key: 'clear', icon: <FileWrongOutline />, text: '清空列表' }
-]
-
-// 顶部头像滚动栏
-const AvatarGroup: FC = () => {
-  return (
-    <div className="avatar-group">
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
-    </div>
-  )
-}
+import '@/styles/friends.less'
 
 // 聊天列表
-const ChatList: FC = () => {
-  const navigate = useNavigate()
-
+const FriendList: FC = () => {
   return (
-    <div className="chat-list">
-      <div className="chat-list-item" onClick={() => navigate('/chat')}>
+    <div className="friend-list">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -71,7 +21,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -84,7 +34,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -97,7 +47,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -110,7 +60,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -123,7 +73,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -136,7 +86,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -149,7 +99,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -162,7 +112,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -176,7 +126,7 @@ const ChatList: FC = () => {
         </div>
       </div>
 
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -189,7 +139,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -202,7 +152,7 @@ const ChatList: FC = () => {
           <RightOutline fontSize={16} style={{ marginTop: 15 }} />
         </div>
       </div>
-      <div className="chat-list-item">
+      <div className="friend-list-item">
         <img
           src="https://tse3-mm.cn.bing.net/th/id/OIP-C.BxBNXt0A-U6q099vh6X4AAAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
           alt=""
@@ -219,83 +169,68 @@ const ChatList: FC = () => {
   )
 }
 
-// navbar
-const Nav: FC = () => {
-  const inputRef = useRef<InputRef>(null)
+const Friends: FC = () => {
   const navigate = useNavigate()
+  const searchRef = useRef<InputRef>(null)
 
-  const handleAction = (node: Action) => {
-    if (node.key === 'create-group') {
-      Dialog.alert({
-        title: '群聊名称',
-        content: (
-          <div style={{ paddingLeft: 10, paddingRight: 10 }}>
-            <Input placeholder="请输入名称" clearable ref={inputRef} />
-          </div>
-        ),
-        confirmText: '确定',
-        onConfirm: () => {
-          const groupName = inputRef.current?.nativeElement?.value
-          console.log(groupName)
-        }
-      })
-    }
-    if (node.key === 'friends') {
-      navigate('/friends')
-    }
-  }
+  useEffect(() => {
+    searchRef.current?.focus()
+  }, [])
 
   return (
-    <>
+    <div className="friends">
+      {/* navbar */}
       <NavBar
-        backArrow={
-          <Popover.Menu
-            actions={actions}
-            placement="bottom-start"
-            onAction={(node) => handleAction(node)}
-            trigger="click"
-          >
-            <AddCircleOutline fontSize={18} style={{ marginLeft: 10 }} />
-          </Popover.Menu>
-        }
-        right={
-          <SearchOutline
-            fontSize={18}
-            style={{ marginRight: 30 }}
-            onClick={() => navigate('/friends')}
-          />
-        }
+        backArrow={<LeftOutline fontSize={18} />}
         style={{
           backgroundColor: '#e1c0ff',
           position: 'fixed',
           width: '100%',
           height: '50px',
-          top: '0px'
+          top: '0px',
+          color: '#fff'
         }}
-      ></NavBar>
-    </>
-  )
-}
+        onBack={() => navigate(-1)}
+      >
+        <span style={{ fontSize: 16 }}>我的朋友</span>
+      </NavBar>
 
-const Message: FC = () => {
-  return (
-    <div className="message">
-      {/* nabbar */}
-      <Nav></Nav>
-
-      {/* 头像滚动栏 */}
-      <AvatarGroup></AvatarGroup>
-
-      {/* 聊天列表 */}
-      <ChatList></ChatList>
-
-      {/* 没有更多了 */}
-      <div className="nomore">没有更多了</div>
-
-      {/* TabBar */}
-      <TabBar></TabBar>
+      {/* searchbar */}
+      <SearchBar
+        ref={searchRef}
+        placeholder="请输入内容"
+        showCancelButton
+        style={{
+          '--border-radius': '100px',
+          '--background': '#f5f5f5',
+          '--height': '34px',
+          '--padding-left': '12px',
+          width: '88%',
+          margin: '0 auto',
+          padding: '8px 0',
+          paddingTop: 60
+        }}
+        onSearch={(val: string) => {
+          Toast.show(`你搜索了：${val}`)
+        }}
+        onFocus={() => {
+          console.log('获得焦点')
+        }}
+        onBlur={() => {
+          console.log('失去焦点')
+        }}
+        onCancel={() => {
+          console.log('取消搜索')
+        }}
+      />
+      {/* friend list */}
+      <div className="friend-list">
+        <FriendList></FriendList>
+        {/* 没有更多了 */}
+        <div className="nomore">没有更多了</div>
+      </div>
     </div>
   )
 }
 
-export default Message
+export default Friends
