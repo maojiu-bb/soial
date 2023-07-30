@@ -10,11 +10,11 @@ const EditName: FC = () => {
     <div className="editName" style={{ backgroundColor: 'fff' }}>
       {/* 导航栏 */}
       <NavBar
-        backArrow={<LeftOutline fontSize={18} />}
+        backArrow={<LeftOutline fontSize={18} color="#fff" />}
         onBack={() => navigate('/edit')}
-        style={{ backgroundColor: ' #fff', borderBottom: '1px solid #ccc' }}
+        style={{ backgroundColor: '#e1c0ff', borderBottom: '1px solid #ccc' }}
       >
-        <span style={{ fontSize: 16 }}>修改名字</span>
+        <span style={{ fontSize: 16, color: '#fff' }}>修改名字</span>
       </NavBar>
 
       <div
@@ -41,7 +41,7 @@ const EditName: FC = () => {
           <button
             style={{
               border: 0,
-              backgroundColor: '#009dff',
+              backgroundColor: '#e1c0ff',
               color: '#fff',
               width: 130,
               height: 40,
