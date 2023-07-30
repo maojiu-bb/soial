@@ -162,7 +162,12 @@ const Post: FC = () => {
                 extra="请选择你要进行的操作"
                 cancelText="取消"
                 visible={item.visible}
-                actions={location.pathname === '/home' ? homeActions : actions}
+                actions={
+                  location.pathname === '/home' ||
+                  location.pathname === '/searchResult'
+                    ? homeActions
+                    : actions
+                }
                 onClose={() => onClose(item.id)}
                 onAction={(value) => onAction(value, item.id)}
               />

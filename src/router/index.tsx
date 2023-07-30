@@ -18,11 +18,27 @@ const Chat = lazy(() => import('@/views/Chat/index'))
 const ChatOption = lazy(() => import('@/views/ChatOption/index'))
 const Friends = lazy(() => import('@/views/Friends/index'))
 const ChatGroup = lazy(() => import('@/views/ChatGroup/index'))
+const SearchResult = lazy(() => import('@/views/SearchResult/index'))
+const Login = lazy(() => import('@/views/Login/index'))
+const Register = lazy(() => import('@/views/Register/index'))
+const RecoverPassword = lazy(() => import('@/views/RecoverPassword/index'))
 
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Navigate to={'/home'}></Navigate>
+    element: <Navigate to={'/login'}></Navigate>
+  },
+  {
+    path: '/login',
+    element: <Login></Login>
+  },
+  {
+    path: '/register',
+    element: <Register></Register>
+  },
+  {
+    path: '/recoverPassword',
+    element: <RecoverPassword></RecoverPassword>
   },
   {
     path: '/home',
@@ -91,6 +107,10 @@ const routes: RouteObject[] = [
   {
     path: '/chatGroup',
     element: <ChatGroup></ChatGroup>
+  },
+  {
+    path: '/searchResult',
+    element: <SearchResult></SearchResult>
   }
 ]
 

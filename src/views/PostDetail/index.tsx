@@ -44,7 +44,7 @@ const PostDetail: FC = () => {
         }}
         onBack={() => navigate(-1)}
       >
-        返回
+        详情
       </NavBar>
 
       {/* 内容 */}
