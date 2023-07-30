@@ -22,6 +22,8 @@ const SearchResult = lazy(() => import('@/views/SearchResult/index'))
 const Login = lazy(() => import('@/views/Login/index'))
 const Register = lazy(() => import('@/views/Register/index'))
 const RecoverPassword = lazy(() => import('@/views/RecoverPassword/index'))
+const Concern = lazy(() => import('@/views/Concern/index'))
+const Fans = lazy(() => import('@/views/Fans/index'))
 
 const routes: RouteObject[] = [
   {
@@ -111,6 +113,14 @@ const routes: RouteObject[] = [
   {
     path: '/searchResult',
     element: <SearchResult></SearchResult>
+  },
+  {
+    path: '/concerns',
+    element: <Concern></Concern>
+  },
+  {
+    path: '/fans',
+    element: <Fans></Fans>
   }
 ]
 

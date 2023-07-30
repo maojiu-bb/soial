@@ -29,6 +29,7 @@ const Setting: FC = () => {
         设置
       </NavBar>
       <div className="main">
+        <div className="title">Soial</div>
         {item.map((item) => {
           return (
             <div

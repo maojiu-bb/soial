@@ -55,17 +55,30 @@ const Avatar: FC = () => {
 const TopData: FC = () => {
   const navigate = useNavigate()
   const dataList = [
-    { title: '喜欢', count: 99 },
-    { title: '关注', count: 99 },
-    { title: '粉丝', count: 99 },
-    { title: '朋友', count: 99 }
+    { title: '喜欢', key: 'like', count: 99 },
+    { title: '关注', key: 'concern', count: 99 },
+    { title: '粉丝', key: 'fan', count: 99 },
+    { title: '朋友', key: 'friend', count: 99 }
   ]
+
+  const handleClick = (key: string) => {
+    if (key === 'concern') {
+      navigate('/concerns')
+    }
+    if (key === 'fan') {
+      navigate('/fans')
+    }
+    if (key === 'friend') {
+      navigate('/friends')
+    }
+  }
+
   return (
     <div className="top">
       <div className="data">
-        {dataList.map((item, index) => {
+        {dataList.map((item) => {
           return (
-            <span key={index}>
+            <span key={item.key} onClick={() => handleClick(item.key)}>
               {item.title} &nbsp; {item.count}
             </span>
           )
