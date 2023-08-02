@@ -1,7 +1,15 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TabBar from '@/components/Global/TabBar'
-import { Dialog, NavBar, Popup, Switch, Toast } from 'antd-mobile'
+import {
+  Dialog,
+  InfiniteScroll,
+  NavBar,
+  Popup,
+  PullToRefresh,
+  Switch,
+  Toast
+} from 'antd-mobile'
 import {
   UnorderedListOutline,
   ClockCircleOutline,
@@ -11,6 +19,7 @@ import {
 } from 'antd-mobile-icons'
 import Post from '@/components/Global/Post'
 import { homeStyle } from '@/styles/home'
+import { userStore } from '@/store/userStore'
 
 type Popup = {
   visible: boolean
@@ -18,19 +27,35 @@ type Popup = {
 }
 
 const PopupLeft = ({ visible, setVisible }: Popup) => {
+  const logout = userStore((state) => state.logout)
+  const user = userStore((state) => state.user)
+
   const navigate = useNavigate()
 
-  const logout = () =>
+  const handleLogout = () =>
     Dialog.confirm({
       content: '是否退出登录?',
       onConfirm: () => {
-        Toast.show({
-          icon: 'fail',
-          content: '提交失败',
-          position: 'center'
-        })
+        logout({ userid: user.userid })
+          .then(() => {
+            Toast.show({
+              icon: 'success',
+              content: '退出登录成功！'
+            })
+            setTimeout(() => {
+              navigate('/login')
+            }, 300)
+          })
+          .catch(() =>
+            Toast.show({
+              icon: 'fail',
+              content: '退出登录失败！'
+            })
+          )
       }
     })
+
+  useEffect(() => {}, [user])
 
   return (
     <Popup
@@ -68,7 +93,7 @@ const PopupLeft = ({ visible, setVisible }: Popup) => {
           系统设置
           <RightOutline fontSize={16} style={{ marginTop: '16px' }} />
         </div>
-        <div style={homeStyle.popupCell} onClick={logout}>
+        <div style={homeStyle.popupCell} onClick={handleLogout}>
           <SendOutline fontSize={20} style={{ marginTop: '15px' }} />
           退出登录
           <RightOutline fontSize={16} style={{ marginTop: '16px' }} />
@@ -80,6 +105,10 @@ const PopupLeft = ({ visible, setVisible }: Popup) => {
 
 const Home: FC = () => {
   const [visible, setVisible] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  const doRefresh = async () => {}
+  const loadMore = async () => {}
 
   return (
     <div>
@@ -94,8 +123,13 @@ const Home: FC = () => {
       </NavBar>
 
       <div style={homeStyle.main}>
-        {/* post列表 */}
-        <Post></Post>
+        {/* 下拉刷新 */}
+        <PullToRefresh onRefresh={doRefresh} completeDelay={1000}>
+          {/* post列表 */}
+          <Post></Post>
+        </PullToRefresh>
+        {/* 加载更多 */}
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
 
         {/* 左侧弹出层 */}
         <PopupLeft visible={visible} setVisible={setVisible}></PopupLeft>

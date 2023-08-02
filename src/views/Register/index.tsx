@@ -1,12 +1,44 @@
-import { FC, useState } from 'react'
+import { FC, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/register.less'
-import { Form, Input } from 'antd-mobile'
+import { Form, Input, Toast } from 'antd-mobile'
 import { EyeInvisibleOutline, EyeOutline } from 'antd-mobile-icons'
+import { emailRule, passwordRule, usernameRule } from '@/utils/validatorRules'
+import { FormInstance } from 'antd-mobile/es/components/form'
+import { userStore } from '@/store/userStore'
 
 const Register: FC = () => {
+  const register = userStore((state) => state.register)
+
   const navigate = useNavigate()
   const [visible, setVisible] = useState<boolean>(false)
+
+  const formInstance = useRef<FormInstance | null>(null)
+
+  const onFinish = () => {
+    formInstance.current?.validateFields().then((values: any) =>
+      register({
+        username: values.username,
+        password: values.password,
+        email: values.email
+      })
+        .then(() => {
+          Toast.show({
+            icon: 'success',
+            content: '注册成功！'
+          })
+          setTimeout(() => {
+            navigate('/login')
+          }, 1000)
+        })
+        .catch(() =>
+          Toast.show({
+            icon: 'fail',
+            content: '注册失败！'
+          })
+        )
+    )
+  }
 
   return (
     <div className="register">
@@ -21,25 +53,17 @@ const Register: FC = () => {
         <h3>注册</h3>
         {/* 登录 */}
         <div className="register-password">
-          <Form layout="vertical">
-            <Form.Item
-              label="用户名"
-              name="username"
-              rules={[{ required: true, message: '用户名不能为空!' }]}
-            >
+          <Form layout="vertical" onFinish={onFinish} ref={formInstance}>
+            <Form.Item label="用户名" name="username" rules={[usernameRule]}>
               <Input placeholder="请输入用户名" />
             </Form.Item>
-            <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: '邮箱不能为空!' }]}
-            >
+            <Form.Item label="邮箱" name="email" rules={[emailRule]}>
               <Input placeholder="请输入用户邮箱" type="email" />
             </Form.Item>
             <Form.Item
               label="密码"
               name="password"
-              rules={[{ required: true, message: '密码不能为空!' }]}
+              rules={[passwordRule]}
               extra={
                 <div>
                   {!visible ? (
@@ -57,8 +81,21 @@ const Register: FC = () => {
             </Form.Item>
             <Form.Item
               label="确认密码"
-              name="password"
-              rules={[{ required: true, message: '密码不能为空!' }]}
+              name="repassword"
+              rules={[
+                {
+                  ...passwordRule,
+                  validator: (_, value) => {
+                    if (
+                      value &&
+                      value !== formInstance.current?.getFieldValue('password')
+                    ) {
+                      return Promise.reject(new Error('两次输入的密码不一致'))
+                    }
+                    return Promise.resolve()
+                  }
+                }
+              ]}
               extra={
                 <div>
                   {!visible ? (
@@ -84,7 +121,7 @@ const Register: FC = () => {
 
         {/* 注册按钮 */}
         <div className="register-button">
-          <button>注册</button>
+          <button onClick={onFinish}>注册</button>
         </div>
       </div>
     </div>

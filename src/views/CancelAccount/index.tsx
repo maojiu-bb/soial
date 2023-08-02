@@ -1,12 +1,51 @@
-import { Form, Input, NavBar } from 'antd-mobile'
-import { FC, useState } from 'react'
+import { Form, Input, NavBar, Toast } from 'antd-mobile'
+import { FC, useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EyeInvisibleOutline, EyeOutline } from 'antd-mobile-icons'
 import '@/styles/cancelAccount.less'
+import { FormInstance } from 'antd-mobile/es/components/form'
+import { userStore } from '@/store/userStore'
+import { passwordRule } from '@/utils/validatorRules'
 
 const CancelAccount: FC = () => {
+  const user = userStore((state) => state.user)
+  const cancelAccount = userStore((state) => state.cancelAccount)
+
   const navigate = useNavigate()
   const [visible, setVisible] = useState<boolean>(false)
+
+  const formInstance = useRef<FormInstance | null>(null)
+
+  const onFinish = () => {
+    formInstance.current
+      ?.validateFields()
+      .then((value) =>
+        cancelAccount({ userid: user.userid, password: value.password })
+          .then(() => {
+            Toast.show({
+              icon: 'success',
+              content: '注销成功！'
+            })
+            setTimeout(() => {
+              navigate('/login')
+            }, 300)
+          })
+          .catch(() =>
+            Toast.show({
+              icon: 'fail',
+              content: '注销失败！'
+            })
+          )
+      )
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '验证失败！'
+        })
+      )
+  }
+
+  useEffect(() => {}, [user])
 
   return (
     <div className="cancel-account">
@@ -36,10 +75,11 @@ const CancelAccount: FC = () => {
 
         {/* 密码确认 */}
         <div className="confirm">
-          <Form layout="horizontal">
+          <Form layout="horizontal" onFinish={onFinish} ref={formInstance}>
             <Form.Item
               label="密码确认"
               name="password"
+              rules={[passwordRule]}
               extra={
                 <div>
                   {!visible ? (
@@ -57,7 +97,7 @@ const CancelAccount: FC = () => {
               />
             </Form.Item>
             <div className="btn">
-              <button>确认更改</button>
+              <button onClick={onFinish}>确认注销</button>
             </div>
           </Form>
         </div>

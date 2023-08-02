@@ -1,12 +1,40 @@
-import { Form, Input, NavBar } from 'antd-mobile'
-import { FC, useState } from 'react'
+import { Form, Input, NavBar, Toast } from 'antd-mobile'
+import { FC, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/recoverPaswword.less'
 import { EyeInvisibleOutline, EyeOutline } from 'antd-mobile-icons'
+import { emailRule, passwordRule } from '@/utils/validatorRules'
+import { FormInstance } from 'antd-mobile/es/components/form'
+import { userStore } from '@/store/userStore'
 
 const RecoverPassword: FC = () => {
+  const forgetPassword = userStore((state) => state.forgetPassword)
+
   const [visible, setVisible] = useState<boolean>(false)
   const navigate = useNavigate()
+
+  const formInstance = useRef<FormInstance | null>(null)
+
+  const onFinish = () => {
+    formInstance.current?.validateFields().then((values) =>
+      forgetPassword({ email: values.email, newPassword: values.password })
+        .then(() => {
+          Toast.show({
+            icon: 'success',
+            content: '重置成功！'
+          })
+          setTimeout(() => {
+            navigate('/login')
+          }, 1000)
+        })
+        .catch(() =>
+          Toast.show({
+            icon: 'fail',
+            content: '重置失败！'
+          })
+        )
+    )
+  }
 
   return (
     <div className="recover-password">
@@ -29,18 +57,14 @@ const RecoverPassword: FC = () => {
       <div className="main">
         <h3>重改密码</h3>
         <div className="form">
-          <Form layout="vertical">
-            <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: '邮箱不能为空!' }]}
-            >
+          <Form layout="vertical" ref={formInstance} onFinish={onFinish}>
+            <Form.Item label="邮箱" name="email" rules={[emailRule]}>
               <Input placeholder="请输入用户邮箱" type="email" />
             </Form.Item>
             <Form.Item
               label="新密码"
               name="password"
-              rules={[{ required: true, message: '密码不能为空!' }]}
+              rules={[passwordRule]}
               extra={
                 <div>
                   {!visible ? (
@@ -58,8 +82,21 @@ const RecoverPassword: FC = () => {
             </Form.Item>
             <Form.Item
               label="确认新密码"
-              name="password"
-              rules={[{ required: true, message: '密码不能为空!' }]}
+              name="repassword"
+              rules={[
+                {
+                  ...passwordRule,
+                  validator: (_, value) => {
+                    if (
+                      value &&
+                      value !== formInstance.current?.getFieldValue('password')
+                    ) {
+                      return Promise.reject(new Error('两次输入的密码不一致'))
+                    }
+                    return Promise.resolve()
+                  }
+                }
+              ]}
               extra={
                 <div>
                   {!visible ? (
@@ -79,7 +116,7 @@ const RecoverPassword: FC = () => {
         </div>
         {/* 确认按钮 */}
         <div className="confirm">
-          <button>确认</button>
+          <button onClick={onFinish}>确认</button>
         </div>
       </div>
     </div>

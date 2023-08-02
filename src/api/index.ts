@@ -1,6 +1,10 @@
 // axios 简单封装
 
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios'
 
 // 创建 axios 实列
 const request = axios.create({
@@ -23,7 +27,7 @@ request.interceptors.response.use(
   (res: AxiosResponse) => {
     return res
   },
-  (err) => {
+  (err: AxiosError) => {
     return Promise.reject(err)
   }
 )

@@ -1,13 +1,91 @@
-import { FC, useState } from 'react'
+import { FC, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/login.less'
-import { Form, Input } from 'antd-mobile'
+import { Form, Input, Toast } from 'antd-mobile'
 import { EyeInvisibleOutline, EyeOutline } from 'antd-mobile-icons'
+import { emailRule, passwordRule, usernameRule } from '@/utils/validatorRules'
+import { FormInstance } from 'antd-mobile/es/components/form'
+import { userStore } from '@/store/userStore'
 
 const Login: FC = () => {
+  const loginUsername = userStore((state) => state.loginUsername)
+  const loginEmail = userStore((state) => state.loginEmail)
+  const getUserInfo = userStore((state) => state.getUserInfo)
+
   const navigate = useNavigate()
   const [visible, setVisible] = useState<boolean>(false)
   const [visiblePass, setVisiblePass] = useState<boolean>(true)
+
+  const usernameFormRef = useRef<FormInstance | null>(null)
+  const emailFormRef = useRef<FormInstance | null>(null)
+
+  const onFinish = () => {
+    if (visiblePass) {
+      usernameFormRef.current
+        ?.validateFields()
+        .then((values: any) =>
+          loginUsername(values)
+            .then((res) => {
+              getUserInfo(res.data.userid)
+                .then(() => {
+                  setTimeout(() => {
+                    navigate('/home')
+                  }, 300)
+                })
+                .catch(() =>
+                  Toast.show({
+                    icon: 'fail',
+                    content: '获取数据失败！'
+                  })
+                )
+            })
+            .catch(() =>
+              Toast.show({
+                icon: 'fail',
+                content: '登录失败!'
+              })
+            )
+        )
+        .catch(() =>
+          Toast.show({
+            icon: 'fail',
+            content: '请填写完整！'
+          })
+        )
+    } else {
+      emailFormRef.current
+        ?.validateFields()
+        .then((values: any) =>
+          loginEmail(values)
+            .then((res) => {
+              getUserInfo(res.data.userid)
+                .then(() => {
+                  setTimeout(() => {
+                    navigate('/home')
+                  }, 300)
+                })
+                .catch(() =>
+                  Toast.show({
+                    icon: 'fail',
+                    content: '获取数据失败！'
+                  })
+                )
+            })
+            .catch(() =>
+              Toast.show({
+                icon: 'fail',
+                content: '登录失败！'
+              })
+            )
+        )
+        .catch(() =>
+          Toast.show({
+            icon: 'fail',
+            content: '请填写完整！'
+          })
+        )
+    }
+  }
 
   return (
     <div className="login">
@@ -23,18 +101,14 @@ const Login: FC = () => {
         {/* 登录 */}
         {visiblePass ? (
           <div className="login-password">
-            <Form layout="vertical">
-              <Form.Item
-                label="用户名"
-                name="username"
-                rules={[{ required: true, message: '用户名不能为空!' }]}
-              >
+            <Form layout="vertical" onFinish={onFinish} ref={usernameFormRef}>
+              <Form.Item label="用户名" name="username" rules={[usernameRule]}>
                 <Input placeholder="请输入用户名" />
               </Form.Item>
               <Form.Item
                 label="密码"
                 name="password"
-                rules={[{ required: true, message: '密码不能为空!' }]}
+                rules={[passwordRule]}
                 extra={
                   <div>
                     {!visible ? (
@@ -54,18 +128,14 @@ const Login: FC = () => {
           </div>
         ) : (
           <div className="login-email">
-            <Form layout="vertical">
-              <Form.Item
-                label="邮箱"
-                name="email"
-                rules={[{ required: true, message: '邮箱不能为空!' }]}
-              >
+            <Form layout="vertical" onFinish={onFinish} ref={emailFormRef}>
+              <Form.Item label="邮箱" name="email" rules={[emailRule]}>
                 <Input placeholder="请输入用户邮箱" type="email" />
               </Form.Item>
               <Form.Item
                 label="密码"
                 name="password"
-                rules={[{ required: true, message: '密码不能为空!' }]}
+                rules={[passwordRule]}
                 extra={
                   <div>
                     {!visible ? (
@@ -97,7 +167,7 @@ const Login: FC = () => {
 
         {/* 登录按钮 */}
         <div className="login-button">
-          <button>登录</button>
+          <button onClick={onFinish}>登录</button>
         </div>
 
         {/* 忘记密码 */}
