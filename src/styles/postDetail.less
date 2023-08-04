@@ -1,9 +1,62 @@
 .post-detail {
   .post {
     margin-top: 50px;
-    padding: 15px;
-  }
-  .comment {
-    padding: 15px;
+    padding: 12px;
+    .top-info {
+      display: flex;
+      justify-content: space-between;
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+      .info {
+        width: 255px;
+        margin-top: 5px;
+        h3 {
+          color: #666;
+          padding-bottom: 8px;
+        }
+        span {
+          color: #888;
+        }
+      }
+    }
+    .detail {
+      margin-top: 12px;
+      padding: 0 5px;
+      .text {
+        line-height: 1.8;
+        letter-spacing: 1px;
+        color: #666;
+        font-size: 16px;
+      }
+      .images {
+        display: flex;
+        flex-wrap: wrap;
+        .img1 {
+          max-width: 360px;
+          border-radius: 10px;
+        }
+        .img2 {
+          max-width: 178px;
+          border-radius: 10px;
+        }
+        .img3 {
+          max-width: 118px;
+          border-radius: 10px;
+        }
+      }
+    }
+    .bottom-info {
+      margin-top: 8px;
+      padding: 0 5px;
+      .info {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
   }
 }

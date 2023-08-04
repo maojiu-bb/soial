@@ -20,6 +20,7 @@ import {
 import Post from '@/components/Global/Post'
 import { homeStyle } from '@/styles/home'
 import { userStore } from '@/store/userStore'
+import { postStore } from '@/store/postStore'
 
 type Popup = {
   visible: boolean
@@ -67,13 +68,9 @@ const PopupLeft = ({ visible, setVisible }: Popup) => {
       bodyStyle={homeStyle.popupBody}
     >
       <div>
-        <img
-          style={homeStyle.popupImage}
-          src="https://tse1-mm.cn.bing.net/th/id/OIP-C.3wZInd0etWt1rCYy7aT9mQAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-          alt=""
-        />
-        <h2 style={homeStyle.popupTitle}>猫九</h2>
-        <div style={homeStyle.popupDesc}>在午夜时分相遇，寻找真实的自己</div>
+        <img style={homeStyle.popupImage} src={user.avatar} alt="" />
+        <h2 style={homeStyle.popupTitle}>{user.username}</h2>
+        <div style={homeStyle.popupDesc}>{user.introduction}</div>
       </div>
       <div>
         <div style={homeStyle.popupCell}>
@@ -104,11 +101,63 @@ const PopupLeft = ({ visible, setVisible }: Popup) => {
 }
 
 const Home: FC = () => {
+  const { user } = userStore()
+  const { getPostList, hide, report } = postStore()
+
+  const [list, setList] = useState<any[]>([])
+
+  const [page, setPage] = useState<number>(1)
+
   const [visible, setVisible] = useState(false)
   const [hasMore, setHasMore] = useState(true)
 
-  const doRefresh = async () => {}
-  const loadMore = async () => {}
+  const doRefresh = async () => {
+    setPage((page) => page + 1)
+    try {
+      const res = await getPostList({ page: page, userid: user.userid })
+      console.log(res)
+      setList((list) => {
+        return [...res.data.list, ...list]
+      })
+    } catch (error) {
+      Toast.show({
+        icon: 'fail',
+        content: '刷新失败！'
+      })
+    }
+  }
+  const loadMore = async () => {
+    setPage((page) => page + 1)
+    try {
+      const res = await getPostList({ page: page, userid: user.userid })
+      if (res.data.list.length < 10) {
+        setHasMore(false)
+      }
+      setList((list) => {
+        return [...list, ...res.data.list]
+      })
+    } catch (error) {
+      Toast.show({
+        icon: 'fail',
+        content: '加载失败！'
+      })
+    }
+  }
+
+  useEffect(() => {
+    getPostList({ page: page, userid: user.userid })
+      .then((res) => {
+        setList(() => {
+          return [...res.data.list]
+        })
+      })
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '获取数据失败！'
+        })
+      )
+  }, [])
 
   return (
     <div>
@@ -126,7 +175,12 @@ const Home: FC = () => {
         {/* 下拉刷新 */}
         <PullToRefresh onRefresh={doRefresh} completeDelay={1000}>
           {/* post列表 */}
-          <Post></Post>
+          <Post
+            postList={list}
+            hide={hide}
+            userid={user.userid}
+            report={report}
+          ></Post>
         </PullToRefresh>
         {/* 加载更多 */}
         <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
