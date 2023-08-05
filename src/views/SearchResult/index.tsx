@@ -1,10 +1,29 @@
 import Post from '@/components/Global/Post'
-import { NavBar } from 'antd-mobile'
-import { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { postStore } from '@/store/postStore'
+import { userStore } from '@/store/userStore'
+import { NavBar, Toast } from 'antd-mobile'
+import { FC, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const SearchResult: FC = () => {
   const navigate = useNavigate()
+  const {
+    state: { keyword }
+  } = useLocation()
+
+  const { search, searchList, hide, report } = postStore()
+  const { user } = userStore()
+
+  useEffect(() => {
+    search(keyword)
+      .then(() => {})
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '发生错误！'
+        })
+      )
+  }, [])
 
   return (
     <div className="search-result">
@@ -24,7 +43,12 @@ const SearchResult: FC = () => {
 
       {/* post */}
       <div className="main" style={{ padding: 10, paddingTop: 70 }}>
-        <Post></Post>
+        <Post
+          postList={searchList}
+          hide={hide}
+          report={report}
+          userid={user.userid}
+        ></Post>
 
         <div
           style={{

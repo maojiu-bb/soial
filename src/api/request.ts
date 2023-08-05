@@ -256,11 +256,11 @@ export const GetOwnList = <T>(query: T) =>
 
 // 获取喜欢帖子列表
 export const GetLikeList = <T>(query: T) =>
-  request({ url: `/get/like?userid=${query}`, method: 'GET' })
+  request({ url: `/post/like?userid=${query}`, method: 'GET' })
 
 // 获取收藏列表
 export const GetStarList = <T>(query: T) =>
-  request({ url: `/get/star?userid=${query}`, method: 'GET' })
+  request({ url: `/post/star?userid=${query}`, method: 'GET' })
 
 // 添加搜索历史
 export const AddSearchHistory = <T>(data: T) =>

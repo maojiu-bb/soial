@@ -8,7 +8,7 @@ import {
   StarOutline
 } from 'antd-mobile-icons'
 import '@/styles/postDetail.less'
-import { ActionSheet, NavBar, Toast } from 'antd-mobile'
+import { ActionSheet, ImageViewer, NavBar, Toast } from 'antd-mobile'
 import type { Action } from 'antd-mobile/es/components/action-sheet'
 import '@/styles/postDetail.less'
 import Comment from '@/components/Global/Comment/index'
@@ -32,6 +32,7 @@ const PostDetail: FC = () => {
   const location = useLocation()
 
   const [visible, setVisible] = useState<boolean>(false)
+  const [visibleViewer, setvisibleViewer] = useState<boolean>(false)
 
   const [isLike, setIsLike] = useState<boolean>(true)
   const [isStar, setIsStar] = useState<boolean>(true)
@@ -207,11 +208,20 @@ const PostDetail: FC = () => {
                     imgClassName = 'img3'
                   }
                   return (
-                    <img
-                      key={img.imgid}
-                      src={img.imgUrl}
-                      className={imgClassName}
-                    />
+                    <>
+                      <img
+                        key={img.imgid}
+                        src={img.imgUrl}
+                        className={imgClassName}
+                      />
+                      <ImageViewer
+                        image={img.imgUrl}
+                        visible={visibleViewer}
+                        onClose={() => {
+                          setvisibleViewer(false)
+                        }}
+                      />
+                    </>
                   )
                 })}
             </div>

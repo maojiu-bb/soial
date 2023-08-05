@@ -4,6 +4,8 @@ import { LeftOutline } from 'antd-mobile-icons'
 import '@/styles/edit.less'
 import EditList from '@/components/EditList'
 import { useUpload } from '@/hooks/useUpload'
+import { userStore } from '@/store/userStore'
+import { Dialog, Toast } from 'antd-mobile'
 
 // 返回按钮
 const BackIcon: FC = () => {
@@ -16,15 +18,14 @@ const BackIcon: FC = () => {
 }
 
 // 背景图片
-const BackImg: FC = () => {
+const BackImg = (props: { backImage: string }) => {
+  const { backImage } = props
+
   const { fileInputRef, handleButtonClick, handleFileChange } = useUpload()
 
   return (
     <div className="bg-img">
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.Q_Eb78_1wfJlsHQJDkiRSAHaE7?w=240&h=190&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
+      <img src={backImage} alt="背景图片" />
       <div className="change" onClick={handleButtonClick}>
         更换图片
       </div>
@@ -39,15 +40,14 @@ const BackImg: FC = () => {
 }
 
 // 头像
-const Avatar: FC = () => {
+const Avatar = (props: { avatar: string }) => {
+  const { avatar } = props
+
   const { fileInputRef, handleButtonClick, handleFileChange } = useUpload()
 
   return (
     <div className="avatar">
-      <img
-        src="https://tse1-mm.cn.bing.net/th/id/OIP-C.3wZInd0etWt1rCYy7aT9mQAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
+      <img src={avatar} alt="" />
       <div className="title" onClick={handleButtonClick}>
         点击更换头像
       </div>
@@ -62,26 +62,80 @@ const Avatar: FC = () => {
 }
 
 // 操作按钮
-const FuncBtns: FC = () => {
+const FuncBtns = (props: { logout: Function; userid: number | string }) => {
+  const { logout, userid } = props
+
+  const navigate = useNavigate()
+
+  const changeAccount = () => {
+    Dialog.confirm({
+      content: '是否切换账号?',
+      onConfirm: () => {
+        logout({ userid })
+          .then(() => {
+            setTimeout(() => {
+              navigate('/login')
+            }, 300)
+          })
+          .catch(() =>
+            Toast.show({
+              icon: 'fail',
+              content: '切换失败！'
+            })
+          )
+      }
+    })
+  }
+  const logoutAccount = () => {
+    Dialog.confirm({
+      content: '是否退出登录?',
+      onConfirm: () => {
+        logout({ userid })
+          .then(() => {
+            Toast.show({
+              icon: 'success',
+              content: '退出登录成功！'
+            })
+            setTimeout(() => {
+              navigate('/login')
+            }, 300)
+          })
+          .catch(() =>
+            Toast.show({
+              icon: 'fail',
+              content: '退出登录失败！'
+            })
+          )
+      }
+    })
+  }
+
   return (
     <div className="func-btns">
-      <button className="change">切换账号</button>
-      <button className="louout">退出登录</button>
+      <button className="change" onClick={changeAccount}>
+        切换账号
+      </button>
+      <button className="louout" onClick={logoutAccount}>
+        退出登录
+      </button>
     </div>
   )
 }
 
 const Edit: FC = () => {
+  const { user, logout } = userStore()
+  const { avatar, backgroundImage, userid } = user
+
   return (
     <div className="edit">
       {/* 顶部返回按钮 */}
       <BackIcon></BackIcon>
 
       {/* 背景图片 */}
-      <BackImg></BackImg>
+      <BackImg backImage={backgroundImage}></BackImg>
 
       {/* 头像 */}
-      <Avatar></Avatar>
+      <Avatar avatar={avatar}></Avatar>
 
       {/* 主体部分 */}
       <div className="main">
@@ -89,7 +143,7 @@ const Edit: FC = () => {
         <EditList></EditList>
 
         {/* 操作按钮 */}
-        <FuncBtns></FuncBtns>
+        <FuncBtns logout={logout} userid={userid}></FuncBtns>
       </div>
     </div>
   )

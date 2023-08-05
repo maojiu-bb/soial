@@ -1,10 +1,37 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Input, NavBar } from 'antd-mobile'
+import { Input, NavBar, Toast } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons'
+import { userStore } from '@/store/userStore'
 
 const EditDescription: FC = () => {
+  const { user, updateIntroduction, getUserInfo } = userStore()
+  const { userid, introduction } = user
+
   const navigate = useNavigate()
+
+  const [value, setValue] = useState(introduction)
+
+  const changeValue = (value: any) => {
+    setValue(value)
+  }
+
+  const saveChange = () => {
+    updateIntroduction({ userid, introduction: value })
+      .then(() => {
+        Toast.show({
+          icon: 'success',
+          content: '修改成功！'
+        })
+        getUserInfo(userid)
+      })
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '修改失败！'
+        })
+      )
+  }
 
   return (
     <div className="editDescription" style={{ backgroundColor: '#fff' }}>
@@ -35,7 +62,13 @@ const EditDescription: FC = () => {
           }}
         >
           <span style={{ fontSize: 16, marginTop: 13 }}>简介：</span>
-          <Input placeholder="请输入简介" clearable style={{ width: 200 }} />
+          <Input
+            placeholder="请输入简介"
+            clearable
+            style={{ width: 200 }}
+            value={value}
+            onChange={changeValue}
+          />
         </div>
         <div style={{ textAlign: 'center', marginTop: 50 }}>
           <button
@@ -48,6 +81,7 @@ const EditDescription: FC = () => {
               fontSize: 15,
               borderRadius: 10
             }}
+            onClick={saveChange}
           >
             确认修改
           </button>

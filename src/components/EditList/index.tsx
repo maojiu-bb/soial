@@ -6,7 +6,8 @@ import {
   CascadePickerOption,
   DatePicker,
   List,
-  Picker
+  Picker,
+  Toast
 } from 'antd-mobile'
 import {
   PickerColumn,
@@ -21,6 +22,7 @@ import {
 } from 'antd-mobile-icons'
 import { transformData } from '@/utils/transformData'
 import cityData from '@/assets/data/cityOptions.json'
+import { userStore } from '@/store/userStore'
 
 const basicColumns:
   | PickerColumn[]
@@ -48,6 +50,10 @@ const options: CascadePickerOption[] = transformData(cityData)
 
 // 编辑列表
 const EditList: FC = () => {
+  const { user, updateGender, updateBirthday, updateAddress, getUserInfo } =
+    userStore()
+  const { username, introduction, sex, address, birthday, userid } = user
+
   const navigate = useNavigate()
   const [visibleGender, setVisibleGender] = useState(false)
   const [visibleDate, setVisibleDate] = useState(false)
@@ -60,31 +66,31 @@ const EditList: FC = () => {
       id: 1,
       icon: <SmileOutline />,
       title: '名字',
-      text: '猫九'
+      text: username
     },
     {
       id: 2,
       icon: <TagOutline />,
       title: '简介',
-      text: '在午夜时分相遇，寻找真实的自己'
+      text: introduction ? introduction : '无'
     },
     {
       id: 3,
       icon: <QuestionCircleOutline />,
       title: '性别',
-      text: '男'
+      text: sex ? sex : '不展示'
     },
     {
       id: 4,
       icon: <EnvironmentOutline />,
       title: '地区',
-      text: '江西省 赣州市'
+      text: address ? address : '未选择'
     },
     {
       id: 5,
       icon: <FaceRecognitionOutline />,
       title: '生日',
-      text: '不展示'
+      text: birthday ? birthday : '未选择'
     }
   ])
 
@@ -113,35 +119,85 @@ const EditList: FC = () => {
   }
 
   const confirmSelectGender = (value: any) => {
-    setEditProps((preProps) =>
-      preProps.map((item) =>
-        item.id === 3 ? { ...item, text: value as string } : item
+    updateGender({ userid, sex: value })
+      .then(() => {
+        setEditProps((preProps) =>
+          preProps.map((item) =>
+            item.id === 3 ? { ...item, text: value as string } : item
+          )
+        )
+        Toast.show({
+          icon: 'success',
+          content: '更换成功！'
+        })
+        getUserInfo(userid)
+      })
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '更换失败！'
+        })
       )
-    )
   }
 
   const confirmSelectDate = (value: string) => {
-    setEditProps((preProps) =>
-      preProps.map((item) => (item.id === 5 ? { ...item, text: value } : item))
-    )
+    updateBirthday({ userid, birthday: value })
+      .then(() => {
+        setEditProps((preProps) =>
+          preProps.map((item) =>
+            item.id === 5 ? { ...item, text: value } : item
+          )
+        )
+        Toast.show({
+          icon: 'success',
+          content: '更换成功！'
+        })
+        getUserInfo(userid)
+      })
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '更换失败！'
+        })
+      )
   }
 
   const confirmSelectCity = (value: PickerValue[]) => {
-    setEditProps((preProps) =>
-      preProps.map((item) =>
-        item.id === 4
-          ? {
-              ...item,
-              text:
-                value[1] !== '市辖区'
-                  ? `${value[0]} ${value[1]} ${
-                      value[2] === '市辖区' ? '' : value[2]
-                    }`
-                  : `${value[0]} ${value[2]}`
-            }
-          : item
+    updateAddress({
+      userid,
+      address:
+        value[1] !== '市辖区'
+          ? `${value[0]} ${value[1]} ${value[2] === '市辖区' ? '' : value[2]}`
+          : `${value[0]} ${value[2]}`
+    })
+      .then(() => {
+        setEditProps((preProps) =>
+          preProps.map((item) =>
+            item.id === 4
+              ? {
+                  ...item,
+                  text:
+                    value[1] !== '市辖区'
+                      ? `${value[0]} ${value[1]} ${
+                          value[2] === '市辖区' ? '' : value[2]
+                        }`
+                      : `${value[0]} ${value[2]}`
+                }
+              : item
+          )
+        )
+        Toast.show({
+          icon: 'success',
+          content: '更换成功！'
+        })
+        getUserInfo(userid)
+      })
+      .catch(() =>
+        Toast.show({
+          icon: 'fail',
+          content: '更换失败！'
+        })
       )
-    )
   }
 
   return (

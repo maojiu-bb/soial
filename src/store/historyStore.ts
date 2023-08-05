@@ -33,8 +33,10 @@ export const historyStore = create<HistoryStore>()(
         try {
           const { data: res } = await GetSearchHistory(query)
           if (res.code === 200) {
-            const updateList = res.data.list.map((item: any) => {
-              return Object.assign(item, { date: timestampToTime(item.date) })
+            const updateList = res.data.histories.map((item: any) => {
+              return Object.assign(item, {
+                createTime: timestampToTime(item.createTime)
+              })
             })
             set({ searchHistory: updateList })
             return Promise.resolve(res)

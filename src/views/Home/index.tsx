@@ -115,7 +115,6 @@ const Home: FC = () => {
     setPage((page) => page + 1)
     try {
       const res = await getPostList({ page: page, userid: user.userid })
-      console.log(res)
       setList((list) => {
         return [...res.data.list, ...list]
       })

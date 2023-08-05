@@ -9,50 +9,59 @@ import '@/styles/user.less'
 import Fire from '@/assets/image/fire.png'
 import Man from '@/assets/image/man.png'
 import Woman from '@/assets/image/woman.png'
+import { userStore } from '@/store/userStore'
 
 // 背景图片
-const BackImg: FC = () => {
+const BackImg = (props: { image: string }) => {
+  const { image } = props
   return (
     <div className="bg-img">
-      <img
-        src="https://tse3-mm.cn.bing.net/th/id/OIP-C.Q_Eb78_1wfJlsHQJDkiRSAHaE7?w=240&h=190&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-        alt=""
-      />
+      <img src={image} alt="" />
     </div>
   )
 }
 
 // 头像
-const Avatar: FC = () => {
+const Avatar = (props: {
+  avatar: string
+  userid: string | number
+  username: string
+}) => {
+  const { avatar, userid, username } = props
+
   const [visible, setVisible] = useState<boolean>(false)
   return (
     <div className="avatar">
       <img
-        src="https://tse1-mm.cn.bing.net/th/id/OIP-C.3wZInd0etWt1rCYy7aT9mQAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7"
+        src={avatar}
         alt=""
         onClick={() => {
           setVisible(true)
         }}
       />
       <ImageViewer
-        image={
-          'https://tse1-mm.cn.bing.net/th/id/OIP-C.3wZInd0etWt1rCYy7aT9mQAAAA?w=204&h=204&c=7&r=0&o=5&dpr=1.1&pid=1.7'
-        }
+        image={avatar}
         visible={visible}
         onClose={() => {
           setVisible(false)
         }}
       />
       <div className="info">
-        <h2>猫九</h2>
-        <span>SoialID: 6666</span>
+        <h2>{username}</h2>
+        <span>SoialID: {userid}</span>
       </div>
     </div>
   )
 }
 
 // 顶部数据状态
-const TopData: FC = () => {
+const TopData = (props: {
+  sex: string
+  address: string
+  introduction: string
+}) => {
+  const { sex, introduction, address } = props
+
   const navigate = useNavigate()
   const dataList = [
     { title: '喜欢', key: 'like', count: 99 },
@@ -86,19 +95,20 @@ const TopData: FC = () => {
       </div>
       <div className="text">
         <img src={Fire} alt="" />
-        <span>在午夜时分相遇，寻找真实的自己</span>
+        {introduction ? <span>{introduction}</span> : <span>无</span>}
       </div>
       <div className="detail">
-        {true ? (
+        {sex === '男' && (
           <span>
             男 <img src={Man} alt="" />
           </span>
-        ) : (
+        )}
+        {sex === '女' && (
           <span>
             女 <img src={Woman} alt="" />
           </span>
         )}
-        <span>江西·赣州</span>
+        {address && <span>{address}</span>}
       </div>
       <div className="edit">
         <Tag
@@ -115,7 +125,9 @@ const TopData: FC = () => {
 }
 
 // 胶囊选项卡
-const Capsule: FC = () => {
+const Capsule = (props: { username: string }) => {
+  const { username } = props
+
   const [showTitle, setShowTitle] = useState(false)
   const capsuleRef = useRef<HTMLDivElement>(null)
 
@@ -146,7 +158,7 @@ const Capsule: FC = () => {
             showTitle ? 'fade-in' : 'fade-out'
           }`}
         >
-          猫九
+          {username}
         </div>
       )}
       <CapsuleTabs>
@@ -165,21 +177,36 @@ const Capsule: FC = () => {
 }
 
 const User: FC = () => {
+  const { user } = userStore()
+  const {
+    backgroundImage,
+    avatar,
+    userid,
+    username,
+    sex,
+    address,
+    introduction
+  } = user
+
   return (
     <div className="user">
       {/* 背景图片 */}
-      <BackImg></BackImg>
+      <BackImg image={backgroundImage}></BackImg>
 
       {/* 头像 */}
-      <Avatar></Avatar>
+      <Avatar avatar={avatar} userid={userid} username={username}></Avatar>
 
       {/* 主体部分 */}
       <div className="main">
         {/* 数据栏与状态 */}
-        <TopData></TopData>
+        <TopData
+          sex={sex}
+          address={address}
+          introduction={introduction}
+        ></TopData>
 
         {/* 胶囊选项卡 */}
-        <Capsule></Capsule>
+        <Capsule username={username}></Capsule>
       </div>
 
       {/* TabBar */}

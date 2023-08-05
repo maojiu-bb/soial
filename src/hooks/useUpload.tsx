@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const useUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -7,10 +7,15 @@ export const useUpload = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0])
-      // 在这里可以执行上传文件的操作
-      console.log(selectedFile)
     }
   }
+
+  useEffect(() => {
+    if (selectedFile) {
+      console.log(selectedFile)
+      // 在这里执行上传文件的操作
+    }
+  }, [selectedFile])
 
   const handleButtonClick = () => {
     if (fileInputRef.current) {

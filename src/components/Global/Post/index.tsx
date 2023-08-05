@@ -11,6 +11,7 @@ import '@/styles/post.less'
 import { ActionSheet, Toast } from 'antd-mobile'
 import type { Action } from 'antd-mobile/es/components/action-sheet'
 import { PostProps } from '@/types/post'
+import { postStore } from '@/store/postStore'
 
 const actions: Action[] = [
   { text: '修改', key: 'edit' },
@@ -25,6 +26,7 @@ const homeActions: Action[] = [
 
 const Post = (props: PostProps) => {
   const { postList, userid, hide, report } = props
+  const { deletePost } = postStore()
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -83,7 +85,27 @@ const Post = (props: PostProps) => {
         )
       onClose(id)
     }
-
+    if (key === 'delete') {
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.postid === id ? { ...item, show: false } : item
+        )
+      )
+      deletePost(id)
+        .then(() => {
+          Toast.show({
+            icon: 'success',
+            content: '操作成功！'
+          })
+        })
+        .catch(() =>
+          Toast.show({
+            icon: 'fail',
+            content: '操作失败！'
+          })
+        )
+      onClose(id)
+    }
     console.log(key, text)
   }
 
