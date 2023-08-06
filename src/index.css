@@ -123,7 +123,7 @@ section {
 }
 
 /* 自定义 Valine 输入框样式 */
-.vinput {
+.veditor {
   min-height: 50px !important;
   padding: 0 !important;
   /* 设置输入框的高度 */
@@ -133,6 +133,7 @@ section {
 .vedit {
   padding-top: 0 !important;
 }
+
 
 /* 自定义填写框样式 */
 /* .vnick-custom,

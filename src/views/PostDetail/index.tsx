@@ -32,7 +32,6 @@ const PostDetail: FC = () => {
   const location = useLocation()
 
   const [visible, setVisible] = useState<boolean>(false)
-  const [visibleViewer, setvisibleViewer] = useState<boolean>(false)
 
   const [isLike, setIsLike] = useState<boolean>(true)
   const [isStar, setIsStar] = useState<boolean>(true)
@@ -213,13 +212,11 @@ const PostDetail: FC = () => {
                         key={img.imgid}
                         src={img.imgUrl}
                         className={imgClassName}
-                      />
-                      <ImageViewer
-                        image={img.imgUrl}
-                        visible={visibleViewer}
-                        onClose={() => {
-                          setvisibleViewer(false)
-                        }}
+                        onClick={() =>
+                          ImageViewer.Multi.show({
+                            images: postDetail.images.map((item) => item.imgUrl)
+                          })
+                        }
                       />
                     </>
                   )
